@@ -1,0 +1,111 @@
+conky.config = {
+-- -- Conky settings -- #
+	background = true,
+	update_interval = 1,
+
+	cpu_avg_samples = 2,
+	net_avg_samples = 2,
+
+	override_utf8_locale = true,
+
+	double_buffer = true,
+	no_buffers = true,
+
+	text_buffer_size = 32768,
+	imlib_cache_size = 0,
+
+-- -- Window specifications -- #
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_transparent = true,
+	own_window_argb_visual = true,
+	own_window_argb_value = 90,
+	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+	own_window_colour = '#000000',
+
+	minimum_width = 310,
+	minimum_height = 1070,
+
+	border_inner_margin = 10,
+	border_outer_margin = 0,
+	alignment = 'top_right',
+--	gap_x = 50,
+	gap_y = 0,
+
+-- -- Graphics settings -- #
+	draw_shades = false,
+	draw_outline = false,
+	draw_borders = false,
+	draw_graph_borders = false,
+
+	-- Conky on second monitor
+	xinerama_head = 2,
+
+-- -- Text settings -- #
+-- Ícones: ${font Conky Icons by Carelli:size=14}
+	use_xft = true,
+	font = 'Ubuntu Fancy:size=12',
+	xftalpha = 0.8,
+	uppercase = false,
+	default_color = '#FFFFFF',
+	color1 = '090909',
+	color2 = '000000',
+--	format_human_readable = true,
+};
+
+conky.text = [[
+${image ~/Pictures/ConkyPictures/arch.png -p 0,80 -s 100x100}${color}${voffset 20}
+${alignr}${font Ubuntu:style=Medium:pixelsize=50}${time %H:%M}${font}
+${voffset 10}${alignr}${font Ubuntu:style=Medium:pixelsize=18}${time %A %d %B %Y}${font}
+${alignr}${color}${font} Battery: ${exec /usr/bin/cat /sys/class/power_supply/BAT0/capacity}${font}%
+${alignr}${color}${font Conky Icons by Carelli:size=30}${color}${font Conky Icons by Carelli:size=14}ǒ${font}${uptime}
+${alignr}${color}${font}Load: ${loadavg}
+${hr 2}
+${alignr}${font}${distribution} - ${kernel}
+
+#${color}${font Ubuntu:style=Bold:pixelsize=22}Quote of the Day:
+#${alignr}${color}${font}It's the little things
+${color}${font Conky Icons by Carelli:size=18}E${goto 42}${font Ubuntu:style=Bold:pixelsize=22}WiFi
+${hr 1}
+${color}${font}Interface: ${goto 105}${font}wlp2s0${color}
+${font Conky Icons by Carelli:size=14}Ƃ ${goto 35}${font}${upspeed wlp2s0}
+${font Conky Icons by Carelli:size=14}Ɓ ${goto 35}${font}${downspeed wlp2s0}
+${font Conky Icons by Carelli:size=14}h ${goto 35}${font}${addrs wlp2s0}
+${font Conky Icons by Carelli:size=14}h ${goto 35}${font}${exec curl ipinfo.io/ip}
+${font Conky Icons by Carelli:size=12}Ǘ ${font}${wireless_essid wlp2s0} : ${wireless_link_qual wlp2s0}%
+
+#${color #f8df58}${font Conky Icons by Carelli:size=14}ň ${font}DRIVERS${color}
+#${font Conky Icons by Carelli:size=14}ǘ ${font}${goto 35}sda: ${hddtemp /dev/sda} �C sdb: ${hddtemp /dev/sdb} ºC
+#${font Conky Icons by Carelli:size=14}Ǒ ${font}${goto 35}sda:${goto 280}${fs_bar 7,75 /}${goto 225}${fs_free_perc /}%
+#Reading sda: ${diskio_read /dev/LVMGroup00/lvmvol0}${goto 245} Writing sda: ${diskio_write /dev/LVMGroup00/lvmvol0}
+#${diskiograph_read /dev/sda 20,80 2216e1 2216e1}${goto 245}${diskiograph_write /dev/sda 20,80 DD3A21 DD3A21}
+#Reading sdb: ${diskio_read /dev/sdb1}${goto 245} Writing sdb: ${diskio_write /dev/sdb1}
+#${diskiograph_read /dev/sdb 20,80 2216e1 2216e1}${goto 245}${diskiograph_write /dev/sdb 2,80 DD3A21 D3A21}0D
+${color}${font Ubuntu:style=Bold:pixelsize=22}Packages
+${hr 1}
+${color}${font}System Package Count:${goto 210}${exec cat /tmp/packageCount}
+${color}${font}Update Count:${goto 210}${execi 360 checkupdates | wc -l}
+${color}${font}AUR Update Count:${goto 210}${execi 3600 /usr/bin/jaurman -n}
+
+
+${color}${font Conky Icons by Carelli:size=18}Ŵ ${font Ubuntu:style=Bold:pixelsize=22}CPU${color}${font}
+${hr 1}
+${cpu cpu1}%${goto 62}${cpubar cpu1 7,80}
+${cpu cpu2}%${goto 62}${cpubar cpu2 7,80}
+${cpu cpu3}%${goto 62}${cpubar cpu3 7,80}
+${cpu cpu4}%${goto 62}${cpubar cpu4 7,80}
+
+${color}${font Conky Icons By Carelli:size=18}B${font Ubuntu:style=Bold:pixelsize=22}Memory${color}${font}
+${hr 1}
+RAM:${goto 55}$memperc%${goto 100}${membar 7,80}
+SWAP:${goto 65}$swapperc%${goto 100}${swapbar 7,80}
+
+${color}${font Conky Icons by Carelli:size=18}Ŷ ${font Ubuntu:style=Bold:pixelsize=22}Processes${font}
+${hr 1}
+Name ${goto 120}PID${goto 175}CPU${goto 225}MEM${color}
+${top name 1} ${goto 120}${top pid 1}${goto 175}${top cpu 1}${goto 225}${top mem 1}
+${top name 2} ${goto 120}${top pid 2}${goto 175}${top cpu 2}${goto 225}${top mem 2}
+${top name 3} ${goto 120}${top pid 3}${goto 175}${top cpu 3}${goto 225}${top mem 3}
+${top name 4} ${goto 120}${top pid 4}${goto 175}${top cpu 4}${goto 225}${top mem 4}
+${top name 5} ${goto 120}${top pid 5}${goto 175}${top cpu 5}${goto 225}${top mem 5}
+]];

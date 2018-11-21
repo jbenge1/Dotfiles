@@ -1,0 +1,132 @@
+## IMAP configuration
+
+##Username and password
+#set imap_user="j.benge@techgapsolutions.com"
+#set imap_pass="pbkdapehnlyezumq"
+
+##The folder to use (using imap server)
+#set folder=imaps://imap.gmail.com:993
+
+##"+" so we don"t have to retype the full path
+#set spoolfile=+INBOX
+##Check inbox regularly
+#mailboxes =+INBOX
+
+##Store message headers to locally speed tnigs up
+#set header_cache = ~/.cache/mutt
+
+##Store messages locally to speed things up
+##Comment this if you start running out of disk space
+#set message_cachedir = "~/.cahce/mutt"
+
+##Specify where to save/look for postponed messages
+#set postponed = +[Gmail]/Drafts
+
+##Allow mutt to open a new IMAP connection automatically
+#unset imap_passive
+
+##Keep imap connection alive
+#set imap_keepalive = 300
+
+## Check for new mail (in seconds) 
+## (look every 5 minutes now)
+#set mail_check = 300
+
+# SMTP configuration
+#Where all sent emails will be saved
+#set record = +Sent
+#unset record
+
+#set my_pass="Polevault18"
+#set my_user="justin"
+
+#set realname="Justin Benge"
+#set from=justinbng36@gmail.com
+#set use_from = yes
+
+#set smtp_url=smtps://$imap_user:$imap_pass@
+
+
+#### Everything before is for a single profile muttrc. Everything after is for multiple profiles
+
+## General Options
+set header_cache = "~/.cache/mutt"
+set imap_check_subscribed
+set imap_keepalive = 300
+set imap_passive
+set mail_check = 120
+set mbox_type=Maildir
+
+## Address Alias'
+#set alias_file - "~/.mutt/aliases"
+#set sort_alias = alias
+#set reverse_alias = yes
+#source $alias_file
+
+set alias_file = "~/.mutt/aliases"
+set sort_alias = alias
+set reverse_alias = yes
+source $alias_file
+## Work Acount (j.benge1@techgapsolutions.com)
+source "~/.mutt/work"
+##Here we use the $folder variable that has just been set in the sourced file
+##We must set it right now otherwise the 'folder' variable will change in the next sourced file
+folder-hook $folder 'source ~/.mutt/work'
+
+## Personal Account (justinbng36@gmail.com)
+source "~/.mutt/personal"
+folder-hook justinbng36@gmail.com/ 'source ~/.mutt/personal'
+folder-hook justinbng36@gmail.com/Family 'set realname="Justin"'
+
+##Shortcuts
+macro index,pager <f2> '<sync-mailbox><enter-command>source ~/.mutt/personal<enter><change-folder>!<enter>'
+macro index,pager <f3> '<sync-mailbox><enter-command>source ~/.mutt/work<enter><change-folder>!<enter>'
+macro index,pager <f4> '<sync-mailbox><enter-command>source ~/.mutt/school<enter><change-folder>!<enter>'
+
+macro index 'c' '<change-folder>?<change-dir><home>^K=<enter>'
+
+set editor=vim
+# -*-muttrc-*-
+
+# Palette for use with the Linux console.  Black background.
+
+color hdrdefault blue black
+color quoted blue black
+color signature blue black
+color attachment red black
+color prompt brightmagenta black
+color message brightred black
+color error brightred black
+color indicator black red
+color status brightgreen blue
+color tree white black
+color normal white black
+color markers red black
+color search white black
+color tilde brightmagenta black
+color index blue black ~F
+color index red black "~N|~O"
+
+# color body brightwhite black '\*+[^*]+\*+'
+# color body brightwhite black '_+[^_]+_+'
+#
+## GPGP Settings
+set pgp_decode_command="gpg %?p?--passphrase-fd 0? --no-verbose --batch --output - %f"
+set pgp_verify_command="gpg --no-verbose --batch --output - --verify %s %f"
+set pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch --output - %f"
+set pgp_sign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_clearsign_command="gpg --no-verbose --batch --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+set pgp_encrypt_only_command="pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust --encrypt-to 0xC9C40C31 -- -r %r -- %f"
+set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust --encrypt-to 0xC9C40C31 -- -r %r -- %f"
+set pgp_import_command="gpg --no-verbose --import -v %f"
+set pgp_export_command="gpg --no-verbose --export --armor %r"
+set pgp_verify_key_command="gpg --no-verbose --batch --fingerprint --check-sigs %r"
+set pgp_list_pubring_command="gpg --no-verbose --batch --with-colons --list-keys %r" 
+set pgp_list_secring_command="gpg --no-verbose --batch --with-colons --list-secret-keys %r" 
+#set pgp_autosign=yes
+#set pgp_sign_as=0xC9C40C31
+set pgp_replyencrypt=yes
+set pgp_timeout=1800
+set pgp_good_sign="^gpg: Good signature from"
+auto_view text/html
+alternative_order text/plain text/enriched text/html
