@@ -1,8 +1,6 @@
 ## IMAP configuration
 
 ##Username and password
-#set imap_user="j.benge@techgapsolutions.com"
-#set imap_pass="pbkdapehnlyezumq"
 
 ##The folder to use (using imap server)
 #set folder=imaps://imap.gmail.com:993
