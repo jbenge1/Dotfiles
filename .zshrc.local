@@ -8,13 +8,22 @@ autoload -U colors && colors
 #PS1="[%n@%M %1~]$ "
 
 ## More advanced prompt
-LPROMPT () {
-PS1="┌─[%{$fg[cyan]%}%m%{$fg_bold[blue]%} %1~%{$fg_no_bold[yellow]%}%(0?.. %?)%{$reset_color%}]
-└─╼ "
-}
+#LPROMPT () {
+#PS1="┌─[%{$fg[cyan]%}%m%{$fg_bold[blue]%} %1~%{$fg_no_bold[yellow]%}%(0?.. %?)%{$reset_color%}]
+#└─╼ "
+#}
 
-LPROMPT
-PROMPT_EOL_MARK=" •"
+#LPROMPT
+#PROMPT_EOL_MARK=" •"
+
+##grml prompt extension
+#function virtual_env_prompt () {
+#    REPLY=${VIRTUAL_ENV+(${VIRTUAL_ENV:t}) }
+#}
+
+#grml_theme_add_token virtual-env -f virtual_env_prompt '%F{magenta}' '%f'
+#zstyle ':prompt:grml:left:setup' items rc virtual-env change-root user at host path vcs percent
+
 #History stuff
 HISTFILE=~/.histfile
 HISTSIZE=1500
@@ -85,8 +94,10 @@ alias tmux='tmuxinator default'
 alias browser='tor-browser'
 alias paste-bin="| curl -F c=@- https://ptpb.pw "
 alias :q="exit"
-## global aliases (for those who like them) ##
+alias u='translate -i'
 
+
+## global aliases (for those who like them) ##
 alias -g '...'='../..'
 alias -g '....'='../../..'
 alias -g BG='& exit'
@@ -156,6 +167,13 @@ bindkey '^R' history-incremental-search-backward
 source /usr/share/doc/pkgfile/command-not-found.zsh
 # End of lines added by compinstall
 
+# file_search() {
+#    read -p "Enter a file name to search: " search_file
+#    find / -name search_file
+#}
+
+#bindkey "^F" file_search()
+#Enable ctl+F as a file search
 
 ##NOW a bunch of other options :)
 #zle -N predict-on  && \
