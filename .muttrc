@@ -1,6 +1,8 @@
 ## IMAP configuration
 
 ##Username and password
+#set imap_user="j.benge@techgapsolutions.com"
+#set imap_pass="pbkdapehnlyezumq"
 
 ##The folder to use (using imap server)
 #set folder=imaps://imap.gmail.com:993
@@ -126,5 +128,7 @@ set pgp_list_secring_command="gpg --no-verbose --batch --with-colons --list-secr
 set pgp_replyencrypt=yes
 set pgp_timeout=1800
 set pgp_good_sign="^gpg: Good signature from"
-auto_view text/html
-alternative_order text/plain text/enriched text/html
+
+send-hook . set signature="~/.mutt/sig"
+#auto_view text/html
+#alternative_order text/plain text/enriched text/html

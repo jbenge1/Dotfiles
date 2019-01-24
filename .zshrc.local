@@ -95,8 +95,8 @@ alias browser='tor-browser'
 alias paste-bin="| curl -F c=@- https://ptpb.pw "
 alias :q="exit"
 alias u='translate -i'
-
-
+alias mpv='mpv -fs'
+alias docker_ip='docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" $1' 
 ## global aliases (for those who like them) ##
 alias -g '...'='../..'
 alias -g '....'='../../..'
@@ -167,12 +167,16 @@ bindkey '^R' history-incremental-search-backward
 source /usr/share/doc/pkgfile/command-not-found.zsh
 # End of lines added by compinstall
 
-# file_search() {
-#    read -p "Enter a file name to search: " search_file
-#    find / -name search_file
-#}
+file_search() {
+    read "search_file?Enter a file name to search: "
+    find /home/$USER -name $search_file 2>&1 | grep -v "Permission denied"
 
-#bindkey "^F" file_search()
+    if [ $? -eq "1" ]; then
+        printf "File not found :(\n"
+    fi
+}
+zle -N file_search
+bindkey '^F' file_search
 #Enable ctl+F as a file search
 
 ##NOW a bunch of other options :)
