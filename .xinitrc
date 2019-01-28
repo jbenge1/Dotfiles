@@ -1,18 +1,10 @@
-NUMBER=$((RANDOM % 5))
-
+NUMBER+$((RANDOM%3))
 if [ $NUMBER -eq "0" ]; then
-    feh --bg-scale /home/justin/Pictures/BackgroundPictures/avatar-the-last-airbende.jpg.png
-elif [ $NUMBER -eq "1" ]; then
-    feh --bg-scale /home/justin/Pictures/BackgroundPictures/calvin_and_hobbes_stars.jpg
-elif [ $NUMBER -eq "2" ]; then
-    feh --bg-scale /home/justin/Pictures/BackgroundPictures/MountainVistas.png
-elif [ $NUMBER -eq "3" ]; then
-    feh --bg-scale /home/justin/Pictures/BackgroundPictures/colossus.jpg
-elif [ $NUMBER -eq "4" ]; then
-    feh --bg-scale /home/justin/Pictures/BackgroundPictures/interstellar.png
+    feh --bg-scale /home/justin/Pictures/BackgroundPictures/Interstellar_Gargantua.jpg
+if [ $NUMBER -eq "1" ]; then
+    feh --bg-scale /home/justin/Pictures/icev2/icev2.png
 else
-    feh --bg-scale /home/justin/Pictures/BackgroundPictures/the_sword_and_sorcery.jpg.png
+    feh --bg-scale /home/justin/Pictures/BackgroundPictures/Interstellar_Tron.jpg
 fi
 
 exec $HOME/Documents/Code/BashScriptSources/dwm-start-status
-
