@@ -97,6 +97,9 @@ alias :q="exit"
 alias u='translate -i'
 alias mpv='mpv -fs'
 alias docker_ip='docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" $1' 
+alias chrome='google-chrome-stable -incognito'
+#I'm sick of accidentally typing too fast and opening in vi >:( 
+alias vi="vim"
 ## global aliases (for those who like them) ##
 alias -g '...'='../..'
 alias -g '....'='../../..'

@@ -22,10 +22,10 @@
 :set backspace=2                 "fullly backspace capable
 ":set number                      "sometimes number lines are useful
 :set directory=~/.vim/swap       "save swap file here 
-"set linebreak                   "attempt to wrap lines in a clean manner
+set linebreak                   "attempt to wrap lines in a clean manner
 "set wildmenu                    "hmmm....
 "set wildmode=list:longest,full  "again, hmm....
-":set spelllang=en             "The only spelling
+:set spelllang=en_us             "The only spelling
 
 ""Set tabs and indents
 :set tabstop=4       "tabs are now 4 columns
@@ -34,6 +34,8 @@
 :set smartindent     "attempt to indent intelligently
 
 "Status bar info and appearance
-:set statusline=\ \%f%m%r%h%w\ ::\ %y\ [%{&ff}]\%=\ [%p%%:\ %l/%L]\
+":set statusline=\ \%f%m%r%h%w\ ::\ %y\ [%{&ff}]\%=\ [%p%%:\ %l/%L]\
+:set statusline=%t[%{strlen(&fenc)?&fenc:'none'},%{&ff}]%h%m%r%y%=%c,%l/%L\ %P
+
 :set laststatus=2
 :set cmdheight=1
