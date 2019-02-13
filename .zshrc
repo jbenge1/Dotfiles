@@ -1,5 +1,10 @@
+##It's time to ditch grml (not that they're bad or anything,
+# in fact I really enjoyed their zsh config). But this 
+# is my zshrc built from the ground up (I actually
+# know what it is doing)
 autoload -U colors && colors
 
+#### PROMPTS ####
 ## Basic prompt
 #PS1="[%n@%m %1~]$ "
 
@@ -18,6 +23,7 @@ HISTORY_IGNORE="ls|history|cd|clear|lls)"
 LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:';
 export LS_COLORS
 
+#### OPTIONS ####
 ## Don't replace the history file
 setopt appendhistory
 ## cd into dir by typing name of dir
@@ -47,7 +53,7 @@ setopt clobber
 ## Dont warn me about bg process when exiting
 setopt nocheckjobs
 
-## Alias'
+#### ALIAS' ####
 alias ls="ls --color -F"
 alias lls='ls -lAh'
 alias mv='mv -v'
@@ -88,17 +94,11 @@ alias -g S='| sort'
 alias -g T='|tail'
 alias -g V='| vim -'
 alias insecssh='ssh -o "StrictHostKeyChecking=no" -o "UserKnownHostsFile=/dev/null" -o "PreferredAuthentications=keyboard-interactive"'
-
 ## Get top 10 shell commands
 alias top10='print -l ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
 
-## For better completion
-autoload -Uz compinit
-compinit
-## allow a menu and use arrow keys :)
-zstyle ':completion:*' menu select
-## allow sudo completion
-zstyle ':completion::complete:*' gain-privileges 1
+
+### FUNCTIONS ####
 
 ## Memory overview
 memusage() {
@@ -118,6 +118,72 @@ hex() {
     fi
 }
 
+# smart cd function, allows switching to /etc when running 'cd /etc/fstab'
+function cd () {
+    if (( ${#argv} == 1 )) && [[ -f ${1} ]]; then
+        [[ ! -e ${1:h} ]] && return 1
+        print "Correcting ${1} to ${1:h}"
+        builtin cd ${1:h}
+    else
+        builtin cd "$@"
+    fi
+}
+
+# Create Directory and \kbd{cd} to it
+function mkcd () {
+    if (( ARGC != 1 )); then
+        printf 'usage: mkcd <new-directory>\n'
+        return 1;
+    fi
+    if [[ ! -d "$1" ]]; then
+        command mkdir -p "$1"
+    else
+        printf '`%s'\'' already exists: cd-ing.\n' "$1"
+    fi
+    builtin cd "$1"
+}
+
+# Create temporary directory and \kbd{cd} to it
+function cdt () {
+    builtin cd "$(mktemp -d)"
+    builtin pwd
+}
+
+# List files which have been accessed within the last {\it n} days, {\it n} defaults to 1
+function accessed () {
+    emulate -L zsh
+    print -l -- *(a-${1:-1})
+}
+
+# List files which have been changed within the last {\it n} days, {\it n} defaults to 1
+function changed () {
+    emulate -L zsh
+    print -l -- *(c-${1:-1})
+}
+
+# run command line as user root via sudo:
+function sudo-command-line () {
+    [[ -z $BUFFER ]] && zle up-history
+    if [[ $BUFFER != sudo\ * ]]; then
+        BUFFER="sudo $BUFFER"
+        CURSOR=$(( CURSOR+5 ))
+    fi
+}
+
+### jump behind the first word on the cmdline.
+### useful to add options.
+function jump_after_first_word () {
+    local words
+    words=(${(z)BUFFER})
+
+    if (( ${#words} <= 1 )) ; then
+        CURSOR=${#BUFFER}
+    else
+        CURSOR=${#${words[1]}}
+    fi
+}
+
+### WIDGET MANAGEMENT ###
 #Enable backwards search
 bindkey -v
 bindkey '^R' history-incremental-search-backward
@@ -126,7 +192,25 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
 
+
+zle -N sudo-command-line
+
+zle -N jump_after_first_word
+
+bindkey "^os" sudo-command-line
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "^xf"  jump_after_first_word
+
+### MISC ###
 ## reports what repo a command is from if not installed
 source /usr/share/doc/pkgfile/command-not-found.zsh
+## For better completion
+autoload -Uz compinit
+compinit
+## allow a menu and use arrow keys :)
+zstyle ':completion:*' menu select
+## allow sudo completion
+zstyle ':completion::complete:*' gain-privileges 1
 
 cat /home/justin/.TODO.txt
