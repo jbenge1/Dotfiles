@@ -1,6 +1,6 @@
 ##Recieve options
 set imap_user = justinbng36@gmail.com
-set imap_pass = "wbatniitrmvykryz"
+set imap_pass = "i.don't.use.passwords"
 set folder    = imaps://justinbng36@imap.gmail.com/
 set spoolfile = +INBOX
 set postponed = +Drafts
@@ -17,5 +17,5 @@ set ssl_force_tls = yes
 unset ssl_starttls
 
 ## Hook -- IMPORTANT!
-account-hook $folder "set imap_user=justinbng36@gmail.com imap_pass=wbatniitrmvykryz"
+account-hook $folder "set imap_user=justinbng36@gmail.com imap_pass=i.don't.use.passwords"
 

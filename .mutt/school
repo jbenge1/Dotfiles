@@ -1,6 +1,6 @@
 ##Recieve options
 set imap_user = j.benge@techgapsolutions.com
-set imap_pass = "pbkdapehnlyezumq"
+set imap_pass = "i.don't.use.passwords"
 set folder    = imaps://imap.gmail.com/
 set spoolfile = +INBOX
 set postponed = +Drafts
@@ -17,5 +17,5 @@ set ssl_force_tls = yes
 unset ssl_starttls
 
 ## Hook -- IMPORTANT!
-account-hook $folder "set imap_user=j.benge@techgapsolutions.com imap_pass=pbkdapehnlyezumq"
+account-hook $folder "set imap_user=j.benge@techgapsolutions.com imap_pass=i.don't.use.passwords"
 
