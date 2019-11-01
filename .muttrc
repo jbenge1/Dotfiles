@@ -2,7 +2,7 @@
 
 ##Username and password
 #set imap_user="j.benge@techgapsolutions.com"
-#set imap_pass="pbkdapehnlyezumq"
+#set imap_pass="i.don't.use.passwords"
 
 ##The folder to use (using imap server)
 #set folder=imaps://imap.gmail.com:993
@@ -37,7 +37,7 @@
 #set record = +Sent
 #unset record
 
-#set my_pass="Polevault18"
+#set my_pass="i.don't.use.passwords"
 #set my_user="justin"
 
 #set realname="Justin Benge"
