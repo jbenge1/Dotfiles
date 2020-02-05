@@ -13,7 +13,7 @@
 ""Misc
 :set t_Co=256                    "I want ALL the colors :)
 :set ttyfast                     "Let's try and get rid of lag
-:set nocompatible                "The future is now!!
+":set nocompatible                "The future is now!!
 :set nobackup                    "disable that stupid backup file 'file~
 :set splitbelow                  "New files go below the current
 :set showmatch                   "Don't you love to know which bracket belongs to which?
