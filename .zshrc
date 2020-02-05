@@ -86,6 +86,12 @@ alias clear="clear && archfetch"
 alias py='python'
 #alias grep="echo use sed isntead :p"
 
+#GIT Alias'
+alias reflog='git reflog'
+alias branch='git checkout -b'
+alias glog='git log'
+alias rebase='git rebase -i HEAD~'
+#
 ## Global alias'
 alias -g '...'='../..'
 alias -g '....'='../../..'
