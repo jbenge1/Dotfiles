@@ -1,2 +1,0 @@
-this is another examle without
-the silly vim commands in it :facelam:
