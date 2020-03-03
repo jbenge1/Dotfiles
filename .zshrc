@@ -7,14 +7,15 @@ autoload -U colors && colors
 #### VARIABLES ####
 export EDITOR=vim
 export BROWSER=firefox
-
+## Source the world
+source /Users/jbenge1/Documents/Code/zsh-git-prompt/zshrc.sh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source /Users/jbenge1/Documents/Code/command-not-found.zsh
+#source /usr/share/doc/pkgfile/command-not-found.zsh
 
 #### PROMPTS ####
-## Basic prompt
-#PS1="[%n@%m %1~]$ "
-
 ## Advanced prompt (this is a left side prompt)
-PROMPT="[%{$fg[cyan]%}%m%{$fg_bold[blue]%} %1~%{$fg_no_bold[yellow]%}%(0?.. %?)%{$reset_color%}]$ "
+PROMPT='[%{$fg[cyan]%}$USER%{$fg_bold[blue]%} %1~%{$fg_no_bold[yellow]%}%(0?.. %?)%{$reset_color%}]$(git_super_status)$ '
 ## this is a right side prompt
 RPROMPT="%B%F{yellow}%(0?.. :()%f%b"
 
@@ -22,11 +23,11 @@ RPROMPT="%B%F{yellow}%(0?.. :()%f%b"
 HISTFILE=~/.histfile
 HISTSIZE=3000
 SAVEHIST=6000
-HISTORY_IGNORE="ls|history|cd|clear|lls)"
+HISTORY_IGNORE="ls|history|cd|clear|lls"
 
 ## For Directory coloring
-LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:';
-export LS_COLORS
+#LS_COLORS='rs=0:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:';
+#export LS_COLORS
 
 ## For man page coloring
 #export PAGER="most" #(maybe there is a better way?)
@@ -62,37 +63,36 @@ setopt clobber
 setopt nocheckjobs
 
 #### ALIAS' ####
-alias ls="ls --color -F"
+
+#Common Alias'
+alias ls="ls -G -F"
 alias lls='ls -lAh'
 alias mv='mv -v'
 alias grep='grep --color=always'
-alias batteryPerc='cat /sys/class/power_supply/BAT0/capacity'
 alias cpu_raper='for i in 1 2 3 4; do while : ; do : ; done & done'
-alias torchroot='sudo chroot --userspec=tor:tor /opt/torchroot /usr/bin/tor'
-alias pacinfo="pacman -Qi"
-alias tmux='tmuxinator default'
-alias browser='tor-browser'
 alias paste-bin="$1 | curl -F c=@- https://ptpb.pw "
 alias :q="exit"
-alias u='translate -i'
-alias mpv='mpv -fs'
-alias docker_ip='docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" $1'
 alias fun="repo-elephant | lolcat"
 alias quote="fortune | cowsay | lolcat"
-#alias sl="sl | lolcat"
 #I'm sick of accidentally typing too fast and opening in vi >:( 
 alias vi="vim"
-alias clear="clear && archfetch"
+#alias clear="clear && screenfetch"
 alias py='python'
-#alias grep="echo use sed isntead :p"
+alias grep="echo use sed isntead :p"
 
-#GIT Alias'
-alias reflog='git reflog'
+#git Alias'
 alias branch='git checkout -b'
-alias glog='git log'
-alias rebase='git rebase -i HEAD~'
-#
-## Global alias'
+alias reflog='git reflog'
+alias commit='git commit -m'
+alias first_push='git push --set-upstream origin'
+alias push='git push'
+alias glog='git log --pretty=oneline'
+alias rebase='git rebase -i HEAD'
+alias rebaseDEV='git rebase -i DEV'
+alias which_branch='git symbolic-ref --short HEAD'
+##########
+
+#Global alias'
 alias -g '...'='../..'
 alias -g '....'='../../..'
 alias -g BG='& exit'
@@ -116,21 +116,8 @@ alias top10='print -l ${(o)history%% *} | uniq -c | sort -nr | head -n 10'
 
 
 ### FUNCTIONS ####
-## Clear function 
-
-clearFunct() {
-    NUM=0
-
-    if [[ num -eq 0  ]]; then
-        clear && archfetch
-    elif [[ num -eq 1 ]]; then
-        clear && fortune | cowsay | lolcat
-    else
-        clear && repo-elephant | lolcat
-    fi
-}
 ## Memory overview
-memusage() {
+function memusage() {
     ps aux | awk '{if (NR > 1) print $5;
                    if (NR > 2) print "+"}
                    END { print "p" }' | dc
@@ -148,15 +135,15 @@ function hex() {
 }
 
 # smart cd function, allows switching to /etc when running 'cd /etc/fstab'
-function cd () {
-    if (( ${#argv} == 1 )) && [[ -f ${1} ]]; then
-        [[ ! -e ${1:h} ]] && return 1
-        print "Correcting ${1} to ${1:h}"
-        builtin cd ${1:h}
-    else
-        builtin cd "$@"
-    fi
-}
+#function cd () {
+#    if (( ${#argv} == 1 )) && [[ -f ${1} ]]; then
+#        [[ ! -e ${1:h} ]] && return 1
+#        print "Correcting ${1} to ${1:h}"
+#        builtin cd ${1:h}
+#    else
+#        builtin cd "$@"
+#    fi
+#}
 
 # Create Directory and \kbd{cd} to it
 function mkcd () {
@@ -215,24 +202,14 @@ function jump_after_first_word () {
 #Enable backwards search
 bindkey -v
 bindkey '^R' history-incremental-search-backward
-source /usr/share/doc/pkgfile/command-not-found.zsh
-
-#bindkey "${terminfo[khome]}" beginning-of-line
-#bindkey "${terminfo[kend]}" end-of-line
-
-
-zle -N sudo-command-line
-
-zle -N jump_after_first_word
-
 bindkey "^os" sudo-command-line
-bindkey "^[[H" beginning-of-line
-bindkey "^[[F" end-of-line
 bindkey "^xf"  jump_after_first_word
 
+zle -N sudo-command-line
+zle -N jump_after_first_word
+
+
 ### MISC ###
-## reports what repo a command is from if not installed
-source /usr/share/doc/pkgfile/command-not-found.zsh
 ## For better completion
 autoload -Uz compinit
 compinit
@@ -240,11 +217,3 @@ compinit
 zstyle ':completion:*' menu select
 ## allow sudo completion
 zstyle ':completion::complete:*' gain-privileges 1
-
-## Source external functions
-source ~/.external_functions
-#### TEMPORARY DELTE WHEN DONE ####
-source /home/justin/getToken
-####
-#Acurl wttr.in
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
